@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FitTrack - Sign In</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet"/>
+  <style>
+    body, html {
+      height: 100%;
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: url('images/bgimage2.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    .overlay {
+      background-color: rgba(255, 255, 255, 0.92);
+      padding: 40px;
+      border-radius: 1rem;
+      max-width: 400px;
+      width: 100%;
+    }
+
+    .form-container {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding-left: 5%;
+    }
+
+    .logo {
+      display: block;
+      margin: 0 auto 20px;
+      width: 90px;
+      height: 90px;
+      object-fit: contain;
+    }
+
+    .btn-primary {
+      background: linear-gradient(to right, #56ab2f, #a8e063);
+      color: white;
+      font-weight: bold;
+      border: none;
+      transition: transform 0.2s ease;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(to right, #3c8a1b, #82ce3a);
+      transform: scale(1.03);
+    }
+
+    .input-group-text {
+      background-color: #f0f0f0;
+      border-radius: 0.5rem 0 0 0.5rem;
+    }
+
+    .form-control:focus {
+      box-shadow: 0 0 0 0.2rem rgba(86, 171, 47, 0.25);
+    }
+
+    a {
+      color: #56ab2f;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <div class="overlay shadow-lg">
+      <img src="images/signinlogo2.png" alt="Fitness Logo" class="logo">
+      <h3 class="mb-4 text-center">Welcome Back to FitTrack</h3>
+      <form action="index.html" onsubmit="localStorage.setItem('signedIn', true)">
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
+            <input type="email" class="form-control" required />
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+            <input type="password" class="form-control" required />
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Sign In</button>
+        <p class="text-center mt-3">Don't have an account? <a href="sign-up.html">Create One</a></p>
+      </form>
+    </div>
+  </div>
+
+
+  <script>
+document.querySelector("form").addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const email = document.querySelector("input[type=email]").value;
+  const password = document.querySelector("input[type=password]").value;
+
+  fetch('/api/users/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.email) {
+      // ✅ Store user info in localStorage
+      localStorage.setItem('userEmail', data.email);
+      localStorage.setItem('userName', data.name || "User");
+      localStorage.setItem('signedIn', true);
+
+      // ✅ Redirect to home page
+      window.location.href = 'profile.html';
+    } else {
+      alert("Invalid login");
+    }
+  })
+  .catch(err => {
+    console.error("Login error:", err);
+    alert("Something went wrong. Please try again.");
+  });
+});
+</script>
+
+
+
+</body>
+</html>

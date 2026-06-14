@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fitness Goals - Fitness Tracker</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
+    <a class="navbar-brand fw-bold" href="index.html">Fitness Tracker</a>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link active" href="goals.html">Fitness Goals</a></li>
+        <li class="nav-item"><a class="nav-link" href="history.html">Workout History</a></li>
+        <li class="nav-item"><a class="nav-link" href="analytics.html">Analytics</a></li>
+        <li class="nav-item"><a class="nav-link" href="profile.html">Profile</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Goal Form -->
+  
+    <!--<h2 style="color:black">Set Your Fitness Goals</h2>-->
+    <!-- Goal Form -->
+<div class="container my-5">
+  <div class="card p-4">
+    <h2><span class="feature-icon">🎯</span> Set Your Fitness Goals </h2>
+    <form id="goalForm">
+      <div class="mb-3">
+        <label class="form-label">Goal Type</label>
+        <select class="form-select" id="goalType" required>
+          <option value="">Select Goal Type</option>
+          <option>Distance (km)</option>
+          <option>Duration (minutes)</option>
+          <option>Calories Burned</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Target Value</label>
+        <input type="number" class="form-control" id="goalValue" required />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Time Frame</label>
+        <select class="form-select" id="goalTimeframe" required>
+          <option value="">Select Time Frame</option>
+          <option>This Week</option>
+          <option>This Month</option>
+          <option>Custom (Coming Soon)</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-success">Save Goal</button>
+    </form>
+
+    <hr class="my-4" />
+    <h4 class="mb-3"><span class="feature-icon">📌</span> Your Saved Goals</h4>
+    <ul id="goalList" class="list-group"></ul>
+  </div>
+</div>
+
+  <script src="script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+  </script>
+  <script>
+  const userEmail = localStorage.getItem("userEmail");
+  const goalForm = document.getElementById("goalForm");
+  const goalList = document.getElementById("goalList");
+
+  if (!userEmail) {
+    alert("Please sign in to set goals.");
+    throw new Error("User not logged in");
+  }
+
+  async function loadGoals() {
+    try {
+      const res = await fetch(`http://localhost:5002/api/goals?email=${userEmail}`);
+      if (!res.ok) throw new Error("Failed to fetch goals");
+      const goals = await res.json();
+
+      goalList.innerHTML = "";
+      goals.forEach(goal => {
+        const li = document.createElement("li");
+        li.className = "list-group-item";
+        li.textContent = `${goal.type}: ${goal.value} (${goal.timeframe})`;
+        goalList.appendChild(li);
+      });
+    } catch (err) {
+      console.error("Error loading goals:", err);
+      goalList.innerHTML = "<li class='list-group-item text-danger'>Failed to load goals</li>";
+    }
+  }
+
+  goalForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const type = document.getElementById("goalType").value;
+    const value = document.getElementById("goalValue").value;
+    const timeframe = document.getElementById("goalTimeframe").value;
+
+    const data = { email: userEmail, type, value, timeframe };
+
+    try {
+      const res = await fetch("http://localhost:5002/api/goals", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      if (res.ok) {
+        alert("Goal saved!");
+        goalForm.reset();
+        loadGoals();
+      } else {
+        const error = await res.json();
+        alert("Error: " + (error.error || "Failed to save goal"));
+      }
+    } catch (err) {
+      console.error("Goal save failed:", err);
+      alert("Server error. Try again later.");
+    }
+  });
+
+  loadGoals();
+</script>
+
+
+
+  <footer class="bg-dark text-white text-center p-3">
+    <p>© 2025 FitTrack. Built with ❤️ by Usha,Anjali,Divya</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,188 @@
+/* Base Styles */
+body {
+  background: linear-gradient(135deg, white, white);
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 0;
+  color: #e0e0e0;
+}
+
+/* Container overrides */
+.container {
+  max-width: 1000px;
+}
+
+/* Header */
+header {
+  background-color: black;
+  padding: 1rem;
+}
+
+header h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #81c784;
+  text-shadow: 1px 1px 2px #1b5e20;
+  margin: 0;
+}
+
+/* Card Styling */
+.card {
+  backdrop-filter: blur(8px);
+  background: rgba(30, 30, 30, 0.85);
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+}
+
+.card-header {
+  background: linear-gradient(to right, #388e3c, #2e7d32);
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 1.1rem;
+  padding: 0.75rem 1.25rem;
+  border-bottom: none;
+  border-radius: 16px 16px 0 0;
+}
+
+/* Inputs */
+input.form-control,
+textarea.form-control,
+select.form-select {
+  background: whitesmoke;
+  color: black;
+  border: 1px solid #4caf50;
+  border-radius: 12px;
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.05);
+  transition: 0.3s ease;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: #81c784;
+  box-shadow: 0 0 5px rgba(129, 199, 132, 0.5);
+}
+
+/* Button */
+.btn-success {
+  background: linear-gradient(to right, #2e7d32, #388e3c);
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+  transition: all 0.3s ease-in-out;
+  color: #fff;
+}
+
+.btn-success:hover {
+  background: linear-gradient(to right, #43a047, #66bb6a);
+  transform: scale(1.03);
+}
+
+/* List Group */
+.list-group-item {
+  background: rgba(60, 60, 60, 0.6);
+  border: none;
+  border-left: 4px solid #81c784;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  color: #ffffff;
+}
+
+/* Chart section */
+canvas {
+  background: white;
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+/* Footer/Extra */
+#analyticsOutput p {
+  margin: 0.5rem 0;
+  font-weight: 500;
+  color: #81c784;
+}
+
+/* Utility Class */
+.text-black {
+  color: black !important;
+}
+
+
+nav {
+  background-color: black;
+}
+
+
+/* Make only the FitTrack brand name use the new font */
+h1.m-0 {
+  font-family: 'Pacifico', cursive;   /* ← stylish font   */
+  font-size: 2.5rem;                  /* tweak as desired */
+  font-weight: 400;                   /* Pacifico looks best at 400 */
+  letter-spacing: 1px;                /* subtle spacing   */
+  margin: 0;                          /* keep the m-0 class behaviour */
+}
+
+
+
+.highlight-tip {
+  background-color: lightblue;
+  color: black;
+  border-left: 4px solid greenyellow;
+  font-weight: 1000;
+}
+
+.flash {
+  animation: flash-bg 0.5s ease-in-out;
+}
+
+@keyframes flash-bg {
+  0% { background-color: #ffc107; color: black; }
+  100% { background-color: black; color: white; }
+}
+
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.8; }
+}
+.pulsing-text {
+  animation: pulse 2s infinite;
+}
+
+.feature-icon {
+  font-size: 2rem;
+  transition: transform 0.3s ease;
+}
+.feature-icon:hover {
+  transform: scale(1.2);
+}
+
+
+.workout-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.workout-item {
+  flex: 1 1 30%;
+  text-align: center;
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 10px;
+  background-color: #f8f9fa;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.workout-item img {
+  width: 100%;
+  height: 200px; /* Set uniform height */
+  object-fit: cover; /* Crop & scale to fit */
+  border-radius: 8px;
+  margin-bottom: 10px;
+}

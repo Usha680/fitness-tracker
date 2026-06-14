@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cardio Workouts</title>
+  <link rel="stylesheet" href="strength-training.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Cardio Workouts</h1>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html#workouts">Back to Workouts</a></li>
+        </ul>
+      </nav>
+      <div class="text-end">
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#activityModal">
+          Log Activity
+        </button>
+      </div>
+      <div class="filter">
+        <button onclick="filterExercises('beginner')">Beginner</button>
+        <button onclick="filterExercises('advanced')">Advanced</button>
+        <button onclick="filterExercises('all')">All</button><br/><br/>
+      </div>
+    </div>
+    </div>
+  </header>
+
+  <section class="container mt-4">
+    <div id="exercise-list" class="exercise-list">
+      <!-- JavaScript will load exercises here -->
+    </div>
+  </section>
+
+  <footer class="bg-dark text-white text-center p-3 mt-4">
+    <p>© 2025 FitTrack. Built with ❤️ by Usha, Anjali, Divya</p>
+  </footer>
+
+  <!-- Activity Log Modal -->
+  <div class="modal fade" id="activityModal" tabindex="-1" aria-labelledby="activityModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="activityForm">
+          <div class="modal-header">
+            <h5 class="modal-title" id="activityModalLabel">Log Cardio Activity</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label">Activity Type</label>
+              <select class="form-select" id="activityType" required>
+                <option disabled selected value="">Select  Cardio Activity</option>
+                <option value="Jump Rope">Jump Rope</option>
+                <option value="Sprints">Sprints</option>
+                <option value="Jumping Jacks">Jumping Jacks</option>
+                <option value="Burpees">Burpees</option>
+                <option value="High Knees">High Knees</option>
+                <option value="Mountain Climbers">Mountain Climbers</option>
+                <option value="Stair Climbing">Stair Climbing</option>
+                <option value="Box Jumps">Box Jumps</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Duration (minutes)</label>
+              <input type="number" class="form-control" id="duration" required />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Calories Burned</label>
+              <input type="number" class="form-control" id="calories" readonly />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Notes</label>
+              <textarea class="form-control" id="notes" rows="2"></textarea>
+            </div>
+          </div>
+          <div class="modal-footer d-flex justify-content-end gap-2">
+            <button type="submit" class="btn btn-primary">Save Activity</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 9999">
+    <div id="activityToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body" id="toastMessage"></div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script src="cardio.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    const userEmail = localStorage.getItem("userEmail");
+    let userProfile = null;
+
+    // Fetch user profile to get weight
+    window.addEventListener("DOMContentLoaded", async () => {
+      if (!userEmail) return;
+
+      try {
+        const res = await fetch(`http://localhost:5002/api/users/profile?email=${userEmail}`);
+        const data = await res.json();
+        if (data.success) {
+          userProfile = data.user;
+        }
+      } catch (err) {
+        console.error("Failed to fetch user profile:", err);
+      }
+    });
+
+    // MET values for strength activities
+    const MET_VALUES = {
+       "Jump Rope": 12.3,
+      "Sprints": 11.0,
+      "Jumping Jacks": 8.0,
+      "Burpees": 10.0,
+      "High Knees": 8.5,
+      "Mountain Climbers": 9.0,
+      "Stair Climbing": 9.5,
+      "Box Jumps": 10.5
+    };
+
+    // Calculate calories based on activity type and duration
+    function calculateCalories() {
+      if (!userProfile) return;
+
+      const activity = document.getElementById("activityType").value;
+      const duration = parseFloat(document.getElementById("duration").value);
+      const weight = userProfile.weight;
+
+      if (!activity || isNaN(duration) || !weight) {
+        document.getElementById("calories").value = "";
+        return;
+      }
+
+      const MET = MET_VALUES[activity] || 5.0;
+      const calories = ((MET * weight * 3.5) / 200) * duration;
+      document.getElementById("calories").value = Math.round(calories);
+    }
+
+    document.getElementById("duration").addEventListener("input", calculateCalories);
+    document.getElementById("activityType").addEventListener("change", calculateCalories);
+
+    function getMotivationMessage(calories) {
+       if (calories >= 500) return "🏃‍♂️ Amazing energy!";
+    if (calories >= 300) return "🔥 Great job!";
+    if (calories >= 150) return "👍 Nice effort!";
+    return "⚡ Try pushing a bit more!";
+    }
+
+    function showToast(message) {
+      document.getElementById("toastMessage").textContent = message;
+      const toastEl = document.getElementById("activityToast");
+      const toast = new bootstrap.Toast(toastEl);
+      toast.show();
+    }
+
+    document.getElementById("activityForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const type = document.getElementById("activityType").value;
+      const duration = parseInt(document.getElementById("duration").value);
+      const calories = parseInt(document.getElementById("calories").value) || 0;
+      const notes = document.getElementById("notes").value.trim();
+
+      if (!userEmail || !type || isNaN(duration)) {
+        showToast("❗ Please fill in all required fields.");
+        return;
+      }
+
+      const data = { email: userEmail, type, duration, calories, notes };
+
+      try {
+        const res = await fetch("http://localhost:5002/api/activities/log", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+
+        if (res.ok) {
+          const message = getMotivationMessage(calories);
+          showToast(`🔥 Boom! You burned ${calories} calories. ${message}`);
+          e.target.reset();
+          document.getElementById("calories").value = "";
+          const modal = bootstrap.Modal.getInstance(document.getElementById("activityModal"));
+          if (modal) modal.hide();
+        } else {
+          const err = await res.json();
+          showToast("❌ Error: " + (err.error || "Activity log failed"));
+        }
+      } catch (error) {
+        console.error(error);
+        showToast("🚫 Server error. Try again later.");
+      }
+    });
+  </script>
+</body>
+</html>

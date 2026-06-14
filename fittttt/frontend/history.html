@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Workout History - Fitness Tracker</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
+    <a class="navbar-brand fw-bold" href="index.html">Fitness Tracker</a>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+  <span id="user-email" class="nav-link disabled"></span>
+</li>
+
+
+        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+        <!--<li class="nav-item"><a class="nav-link" href="goals.html">Fitness Goals</a></li>-->
+        <li class="nav-item"><a class="nav-link active" href="history.html">Workout History</a></li>
+        <li class="nav-item"><a class="nav-link" href="analytics.html">Analytics</a></li>
+      <!-- <li class="nav-item"><a class="nav-link" href="profile.html">Profile</a></li>-->
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Workout History -->
+  <div class="container my-5">
+    <div class="card p-4">
+      <h2 style="color:black"><span class="feature-icon">📅</span>Your Workout History</h2>
+
+      <!-- Filter Options -->
+      <div class="row mb-4">
+        <div class="col-md-6">
+          <label for="filterType" class="form-label">Filter by Activity Type</label>
+          <select id="filterType" class="form-select">
+            <option value="">All</option>
+            <option>Strength Training</option>
+            <option>cardio</option>
+            <option>Yoga</option>
+            <option>Tree Pose</option>
+            <option>Squats</option>
+            <option>Deadlifts</option>
+            <option>Bench Press</option>
+            <option>Pull-ups</option>
+            <option>Overhead Press</option>
+            <option>Lunges</option>
+            <option>Plank</option>
+            <option>Jump Rope</option>
+            <option>Sprints</option>
+            <option>Jumping Jacks</option>
+            <option>Burpees</option>
+            <option>Mountain Climbers</option>
+            <option>Stair Climbing</option>
+            <option>Box Jumps</option>
+            <option>Child's Pose</option>
+            <option>Downward Dog</option>
+            <option>Warrior II </option>
+            <option>Pigeon Pose</option>
+            <option>Camel Pose</option>
+            <option>Crow Pose</option>
+            <option>Seated Forward Bend</option>
+
+
+
+            
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label for="sortBy" class="form-label">Sort by</label>
+          <select id="sortBy" class="form-select">
+            <option value="date">Date (Newest First)</option>
+            <option value="duration">Duration</option>
+            <option value="calories">Calories</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- History List -->
+      <ul class="list-group" id="historyList">
+        <!-- JS will insert activity history here -->
+      </ul>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+
+  </script>
+  <script>
+const userEmail = localStorage.getItem("userEmail");
+document.getElementById("user-email").innerText = userEmail;
+
+const historyList = document.getElementById("historyList");
+const filterType = document.getElementById("filterType");
+const sortBy = document.getElementById("sortBy");
+
+// Load and render activities with filtering and sorting
+async function loadActivities() {
+  try {
+    const res = await fetch(`/api/activities?email=${userEmail}`);
+    let activities = await res.json();
+
+    // Apply filter by activity type
+    const selectedType = filterType.value;
+    if (selectedType) {
+      activities = activities.filter(a => a.type === selectedType);
+    }
+
+    // Apply sorting
+    const sortOption = sortBy.value;
+    activities.sort((a, b) => {
+      if (sortOption === "duration") return b.duration - a.duration;
+      if (sortOption === "calories") return b.calories - a.calories;
+      return new Date(b.date) - new Date(a.date); // default: newest date first
+    });
+
+    // Render list
+    historyList.innerHTML = "";
+    if (activities.length === 0) {
+      historyList.innerHTML = `<li class="list-group-item text-muted">No activities found</li>`;
+    } else {
+      activities.forEach((activity) => {
+        const li = document.createElement("li");
+        li.className = "list-group-item";
+        li.innerHTML = `
+          <strong>${activity.type}</strong><br/>
+          Duration: ${activity.duration} mins<br/>
+          Calories: ${activity.calories}<br/>
+          Date: ${new Date(activity.date).toLocaleDateString()}
+        `;
+        historyList.appendChild(li);
+      });
+    }
+  } catch (err) {
+    console.error("Failed to load activities:", err);
+  }
+}
+
+// Event listeners for filter & sort
+filterType.addEventListener("change", loadActivities);
+sortBy.addEventListener("change", loadActivities);
+
+// Initial load
+loadActivities();
+</script>
+
+  
+
+
+  
+
+  <footer class="bg-dark text-white text-center p-3">
+    <p>© 2025 FitTrack. Built with ❤️ by Usha,Anjali,Divya</p>
+  </footer>
+</body>
+</html>

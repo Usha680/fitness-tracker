@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FitTrack - Profile Setup</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <style>
+    body {
+      background: url('images/bgimage2.jpg') no-repeat center center fixed;
+      background-size: cover;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .setup-form {
+      background-color: rgba(255, 255, 255, 0.95);
+      padding: 40px;
+      border-radius: 1rem;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+
+    .setup-form img {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      margin-bottom: 10px;
+    }
+
+    .btn-success {
+      background: linear-gradient(to right, #56ab2f, #a8e063);
+      border: none;
+    }
+
+    .btn-success:hover {
+      background: linear-gradient(to right, #3c8a1b, #82ce3a);
+    }
+  </style>
+</head>
+<body>
+  <div class="setup-form">
+    <img src="images/hwicon.jpg" alt="Profile Icon" />
+    <h4 class="mb-4">Set Up Your Profile</h4>
+    <form id="profileForm">
+      <div class="mb-3 text-start">
+        <label for="height" class="form-label">Height (cm)</label>
+        <input type="number" id="height" class="form-control" required>
+      </div>
+      <div class="mb-3 text-start">
+        <label for="weight" class="form-label">Weight (kg)</label>
+        <input type="number" id="weight" class="form-control" required>
+      </div>
+      <div class="mb-3 text-start">
+        <label for="age" class="form-label">Age</label>
+        <input type="number" id="age" class="form-control" required>
+      </div>
+      <div class="mb-3 text-start">
+        <label for="gender" class="form-label">Gender</label>
+        <select id="gender" class="form-select" required>
+          <option value="" disabled selected>Select gender</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-success w-100">Save and Continue</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("profileForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const height = document.getElementById("height").value;
+      const weight = document.getElementById("weight").value;
+      const age = document.getElementById("age").value;
+      const gender = document.getElementById("gender").value;
+      const email = localStorage.getItem("userEmail");
+
+      if (!email) {
+        alert("User email not found. Please sign in again.");
+        return;
+      }
+
+      fetch('/api/users/update-profile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, height, weight, age, gender })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          window.location.href = 'index.html';
+        } else {
+          alert("Failed to save profile: " + (data.error || "Unknown error"));
+        }
+      })
+      .catch(err => {
+        console.error("Error updating profile:", err);
+        alert("Something went wrong. Please try again.");
+      });
+    });
+  </script>
+</body>
+</html>

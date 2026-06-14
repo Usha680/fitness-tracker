@@ -1,0 +1,271 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FitTrack - Home</title>
+  <link rel="stylesheet" href="styles.css" />
+ <!--<link rel="stylesheet" href="{% static 'css/styles.css' %}">-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+.gradient-text {
+  background: linear-gradient(90deg, #ff5722, #ff9800, #4caf50, #2196f3, #9c27b0);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientMove 5s ease infinite;
+}
+@keyframes gradientMove {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+
+  
+  .image-banner {
+    background: url('images/fit.jpg') no-repeat center center;
+    background-size: cover;
+    height: 500px; /* Adjust height as needed */
+    position: relative;
+    border-radius: 10px;
+  }
+
+  .banner-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    text-shadow: 1px 1px 5px #000;
+    font-size: 2rem;
+    text-align: center;
+    font-weight: bold;
+  }
+
+
+  
+
+
+
+
+
+</style>
+
+  
+</head>
+<body>
+  <header class="bg-dark text-white p-3">
+    <!-- Google Font: “Pacifico” (hand-lettered script) -->
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+
+    <div class="container d-flex justify-content-between align-items-center">
+      <h1 class="m-0">FitTrack</h1>
+
+
+      <nav>
+        <ul class="nav">
+          <!--<li class="nav-item"><a href="activity.html" class="nav-link text-white glow-hover">Activity Log</a></li>-->
+          <li class="nav-item"><a href="goals.html" class="nav-link text-white glow-hover">Fitness Goals</a></li>
+          <li class="nav-item"><a href="history.html" class="nav-link text-white glow-hover">Workout History</a></li>
+          <li class="nav-item"><a href="analytics.html" class="nav-link text-white glow-hover">Analytics</a></li>
+          <li class="nav-item"><a href="profile.html" class="nav-link text-white glow-hover">Profile</a></li>
+          <li class="nav-item"><a href="#" class="nav-link text-white" onclick="logout()">Logout</a></li>
+
+        </ul>
+      </nav>
+    </div>
+
+    <!--<li class="nav-item"><a href="sign-in.html" class="nav-link text-white">Sign In</a></li>
+<li class="nav-item"><a href="sign-up.html" class="nav-link text-white">Sign Up</a></li>-->
+
+  </header>
+
+  <main class="container py-5">
+    <!--- Welcome Section--> 
+    <section class="text-center mb-5 fade-in">
+<h2 class="gradient-text">Welcome to <span class="highlight-text">FitTrack</span></h2>
+
+      <p class="lead"><b><em>“Your journey to a healthier life begins here.”</em></b></p>
+      <p class="lead" id="datetime" style="font-weight: 500;"></p>
+    </section>
+   <!-- Banner Image Section -->
+<section class="image-banner my-5">
+  <!-- Optional Text Overlay -->
+  <div class="banner-text">
+    
+  </div>
+</section>
+
+
+    
+
+
+    <!-- About Section -->
+    <section class="mb-5 slide-in">
+      <h3>About FitTrack</h3>
+      <p><i>FitTrack is your personal fitness companion. It allows you to log your workouts, set achievable fitness goals, and monitor your progress through interactive charts and insights. Whether you're walking, running, or lifting, FitTrack keeps you on track.</i></p>
+    </section>
+        <p class="lead pulsing-text text-success"><b><i>“Let’s get stronger every day!”</i></b></p>
+<!-- Add to Features section wrapper -->
+
+    <!-- Tip of the Day Section -->
+<section class="mb-5 slide-in">
+  <h3 style="text-align:center">Tip of the Day</h3>
+  <button class="btn btn-dark mb-3" onclick="showTip()">Show Another Tip</button>
+<div id="tipBox" class="p-3 border rounded highlight-tip text-center" style="display: block;">
+  Stay hydrated before, during, and after workouts.
+</div>
+</section>
+
+
+
+ <!-- Workouts Section -->
+  <section id="workouts">
+    <div class="container">
+      <h2>Our Workouts</h2>
+      <div class="workout-container">
+        <div class="workout-item">
+          <!-- Image for Strength Training -->
+          
+            <a href="strength-training.html">
+              <!--<img src="{% static 'images/strength image.jpg' %}" alt="Logo">-->
+
+              <img src="images/strength image.jpg" alt="Person lifting weights">
+              <h3>Strength Training</h3>
+            </a>
+          </div>
+
+        <div class="workout-item">
+          <!-- Image for Cardio Workouts -->
+          <a href="cardio.html">
+         <!--- <img src="{% static 'images/cardioimage.jpg' %}" alt="Logo">-->
+
+          <img src="images/cardioimage.jpg" alt="Running on treadmill">
+          <h3>Cardio Workouts</h3>
+          </a>
+        </div>
+        <div class="workout-item">
+          <!-- Image for Yoga & Stretching -->
+          <a href="yoga.html">
+     <!--<img src="{% static 'images/yoga.jpg' %}" alt="Logo">-->
+
+         <img src="images/yoga.jpg" alt="Yoga class in a peaceful environment">
+          <h3>Yoga & Stretching</h3>
+        </a>
+        </div>
+
+        
+
+      </div>
+    </div>
+  </section>
+
+
+    <!-- Features Section -->
+    <section class="mb-5 slide-in">
+      <h3></br></br>Key Features</h3>
+      <div class="row">
+        <div class="col-md-4">
+          <h5 class="highlight-text">📝 Activity Logging</h5>
+          <p>Record your exercises with details like type, duration, distance, and calories.</p>
+        </div>
+        <div class="col-md-4">
+          <h5 class="highlight-text">🎯 Goal Setting</h5>
+          <p>Set and track goals for calories, distance, and duration.</p>
+        </div>
+        <div class="col-md-4">
+          <h5 class="highlight-text">📈 Data Visualization</h5>
+          <p>View your progress in visual graphs to stay motivated.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Progress Overview (Placeholder) -->
+    <section class="mb-5 slide-in">
+      <h3>Your Progress Overview</h3>
+      <div class="row">
+        <div class="col-sm-6 col-lg-3"><div class="card p-3 text-center"><strong>Total Workouts</strong><p>10</p></div></div>
+        <div class="col-sm-6 col-lg-3"><div class="card p-3 text-center"><strong>Calories Burned</strong><p>1500 cal</p></div></div>
+        <div class="col-sm-6 col-lg-3"><div class="card p-3 text-center"><strong>Total Distance</strong><p>25 km</p></div></div>
+        <div class="col-sm-6 col-lg-3"><div class="card p-3 text-center"><strong>Avg. Duration</strong><p>30 min</p></div></div>
+      </div>
+    </section>
+
+
+   
+
+  <footer class="bg-dark text-white text-center p-3">
+    <p>© 2025 FitTrack. Built with ❤️ by Usha,Anjali,Divya</p>
+  </footer>
+
+
+
+  <script>
+  const tips = [
+    "Stay hydrated before, during, and after workouts.",
+    "Consistency is more important than intensity.",
+    "Warm up before and stretch after every workout.",
+    "Get enough sleep to help your muscles recover.",
+    "Eat a balanced diet with enough protein.",
+    "Rest days are just as important as workout days.",
+    "Track your progress to stay motivated.",
+    "Use proper form to avoid injury."
+  ];
+
+ function showTip() {
+  const tip = tips[Math.floor(Math.random() * tips.length)];
+  const tipBox = document.getElementById("tipBox");
+  tipBox.textContent = tip;
+  tipBox.classList.add("flash");
+  setTimeout(() => tipBox.classList.remove("flash"), 1000);
+}
+
+
+  function updateDateTime() {
+    const now = new Date();
+    document.getElementById("datetime").textContent = now.toLocaleString();
+  }
+  updateDateTime();
+  setInterval(updateDateTime, 1000);
+
+  
+  
+ 
+  // index.html
+if (!localStorage.getItem("signedIn")) {
+  window.location.href = "sign-in.html";
+}
+
+// Then in sign-in.html after successful login
+localStorage.setItem("signedIn", true);
+
+  function logout() {
+    localStorage.removeItem("signedIn");
+    window.location.href = "sign-in.html";
+  }
+
+  fetch("http://localhost:8080/api/log/", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    type: "Cardio",
+    duration: 30,
+    distance: 5,
+    calories: 300
+  })
+})
+.then(res => res.json())
+.then(data => console.log(data))
+.catch(err => console.error("Error:", err));
+
+</script>
+
+
+
+
+
+</body>
+</html>   
